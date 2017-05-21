@@ -7,7 +7,9 @@ class AmmoniteFailureSpec extends FlatSpec with Matchers {
 
     "Ammonite" should "pass" in {
         // First off check that the code runs fine outside of the script:
+        // (You can also paste this into "sbt console" which will fail or succeed depending on the scalac options)
         
+        import example.Traits._
         case class Dummy(anotherParam: String) extends MiscTrait
         val d = Dummy("dummy")
         case class Internal(param0: MiscTrait) extends BaseTrait
@@ -54,6 +56,9 @@ class AmmoniteFailureSpec extends FlatSpec with Matchers {
 
         val startupInfo = s"""
             import example.Traits._
+
+            // Doesn't help (unlike in sbt console)
+            interp.configureCompiler(_.settings.YnoLoadImplClass.value = true)
 
             println(s\"\"\"
                 $startupRun
